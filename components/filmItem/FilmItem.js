@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import style from './style';
+import { getImageFromApi } from '../../API/TMDb';
 
 const { Component } = React;
 
@@ -17,7 +18,7 @@ class FilmItem extends Component {
       <View style={style.viewMain}>
         <Image style={style.film_image}
           // source={require('../../assets/icon.png')}></Image>
-          source={require('../../assets/icon.png')}></Image>
+          source={{uri: getImageFromApi(film.poster_path)}}></Image>
         <View style={style.viewContent}>
           <View style={style.viewHeader}>
             <Text style={style.film_title}>{film.title}</Text>

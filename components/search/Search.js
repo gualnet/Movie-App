@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, TextInput, FlatList, Text } from 'react-native';
+import { View, Button, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import style from './style';
 import data from '../../helpers/films';
 import FilmItem from '../filmItem/FilmItem';
@@ -12,6 +12,7 @@ class Search extends Component {
     super(props);
     this.state = {
       films: [],
+      isLoading: false,
     };
     this.searchText = '';
   }
@@ -19,19 +20,31 @@ class Search extends Component {
   async _loadFilms() {
     if (this.searchText.length > 0) {
       try {
+        this.setState({ isLoading: true });
         const filmsData = await getFilmsFromApiWithSearchedText(this.searchText);
-        this.setState({ films: filmsData.results })
-        console.log('filmsData', filmsData.results[0]);
+        this.setState({
+          films: filmsData.results,
+          isLoading: false,
+        });
       } catch (error) {
         console.error('ERRROR', error);
       }
-
     }
   };
   
   _searchTextInputChange(text) {
     this.searchText = text;
   };
+
+  _displayLoading() {
+    if (this.state.isLoading) {
+      return (
+        <View style={style.viewLoading}>
+          <ActivityIndicator size='large' color='#003AFF'/>
+        </View>
+      )
+    }
+  }
 
   render() {
     console.log('RENDER');
@@ -41,6 +54,7 @@ class Search extends Component {
           style={style.text_input}
           placeholder="Titre"
           onChangeText={text => this._searchTextInputChange(text)}
+          onSubmitEditing={() => this._loadFilms()}
         >
         </TextInput>
         <Button
@@ -53,6 +67,7 @@ class Search extends Component {
           renderItem={({item}) => <FilmItem Film={item}/>}
         >
         </FlatList>
+        {this._displayLoading()}
       </View>
     );
   };
