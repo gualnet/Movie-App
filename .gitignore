@@ -10,4 +10,4 @@ npm-debug.*
 web-build/
 web-report/
 
-// ./helpers/token.js
+helpers/token.js
