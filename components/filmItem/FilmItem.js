@@ -4,14 +4,19 @@ import style from './style';
 
 const { Component } = React;
 
+/**
+ * props {
+ *  Film: Object
+ * }
+ */
 class FilmItem extends Component {
   
   render() {
-    console.log('PROPS', this.props);
     const film = this.props.Film
     return (
       <View style={style.viewMain}>
         <Image style={style.film_image}
+          // source={require('../../assets/icon.png')}></Image>
           source={require('../../assets/icon.png')}></Image>
         <View style={style.viewContent}>
           <View style={style.viewHeader}>
