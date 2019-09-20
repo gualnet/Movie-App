@@ -7,17 +7,18 @@ const initialState = {
 export const toggleFavorite = (state = initialState, action) => {
 
   let nextState = {
-    favoritesFilms: [...favoritesFilms]
+    favoritesFilms: [...state.favoritesFilms]
   };
 
   switch (action.type) {
     case "TOGGLE_FAVORITE":
-      const favoriteFilmIndex = state.favoritesFilms.findIndex(item => item.id === action.value.id);
+      const favoriteFilmIndex = state.favoritesFilms.findIndex(film => film.id === action.value.id);
       if (favoriteFilmIndex !== -1) {
-        nextState.favoritesFilms.filter((item, index) => index !== favoriteFilmIndex);
+        nextState.favoritesFilms.splice(favoriteFilmIndex, 1);
       } else {
         nextState.favoritesFilms.push(action.value);
       }
+      return nextState;
     default:
       return nextState;
   }
