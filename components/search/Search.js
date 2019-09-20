@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View, Button, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import style from './style';
-import FilmItem from '../filmItem/FilmItem';
+import FilmList from '../filmList/FilmList';
+
 import { getFilmsFromApiWithSearchedText } from '../../API/TMDb'
 
 const { Component } = React;
@@ -56,12 +57,8 @@ class Search extends Component {
     this._loadFilms();
   };
 
-  _displayDetailForFilm = (idFilm) => {
-    this.props.navigation.navigate("FilmDetails", { idFilm });
-  };
-
   render() {
-    console.log('RENDER');
+    console.log('RENDER Search');
     return (
       <View style={style.view}>
         <TextInput
@@ -75,19 +72,13 @@ class Search extends Component {
           style={style.search_button}
           title="Recherche" onPress={async () => await this._searchFilms()}>
         </Button>
-        <FlatList
-          data={this.state.films}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <FilmItem Film={item} displayDetailForFilm={this._displayDetailForFilm}/>}
-          onEndReachedThreshold={0.5}
-          onEndReached={() => {
-            if (this.page < this.totalPage) {
-              this._loadFilms();
-            };
-          }}
-          extraData={this.props.favoritesFilms}
-        >
-        </FlatList>
+        <FilmList
+          films={this.state.films}
+          navigation={this.props.navigation}
+          loadFilms={this._loadFilms}
+          page={this.page}
+          totalPage={this.totalPage}
+        />
         {this._displayLoading()}
       </View>
     );

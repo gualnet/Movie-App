@@ -29,6 +29,7 @@ class FilmItem extends Component {
   
   render() {
     const film = this.props.Film
+    console.log('\nRENDER FilmItem', film);
     const displayDetailForFilm = this.props.displayDetailForFilm;
     return (
       <TouchableOpacity
