@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
   view: {
-    marginTop: 40,
+    // marginTop: 40,
     flex: 1,
   },
   search_button: {

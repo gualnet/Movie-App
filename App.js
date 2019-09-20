@@ -1,14 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import Search from './components/search/Search';
+import Navigation from './navigation/navigation';
 
 export default function App() {
   return (
-    <Search></Search>
-    // <View style={styles.container}>
-    //   <Text>Hello world !</Text>
-    // </View>
+    <Navigation />
   );
 }
 
