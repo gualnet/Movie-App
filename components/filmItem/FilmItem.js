@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import style from './style';
 import { getImageFromApi } from '../../API/TMDb';
@@ -11,6 +12,20 @@ const { Component } = React;
  * }
  */
 class FilmItem extends Component {
+
+  _displayFavoriteImage() {
+    var sourceImage = require('../../assets/fav_off.png');
+    if (this.props.favoritesFilms.findIndex(film => film.id === this.props.Film.id) !== -1) {
+      sourceImage = require('../../assets/fav_on.png');
+      return (
+        <Image
+          style={style.favoriteImage}
+          source={sourceImage}
+        />
+      )
+    }
+    return;
+  };
   
   render() {
     const film = this.props.Film
@@ -24,6 +39,7 @@ class FilmItem extends Component {
           source={{uri: getImageFromApi(film.poster_path)}}></Image>
         <View style={style.viewContent}>
           <View style={style.viewHeader}>
+            {this._displayFavoriteImage()}
             <Text style={style.film_title}>{film.title}</Text>
             <Text style={style.film_vote}>{film.vote_average}</Text>
           </View>
@@ -40,6 +56,10 @@ class FilmItem extends Component {
   };
 };
 
-export default FilmItem;
-// salack
-// %0SlQ1BWcu^0
+const mapStateToProps = (state) => {
+  return {
+    favoritesFilms: state.favoritesFilms,
+  };
+};
+
+export default connect(mapStateToProps)(FilmItem);

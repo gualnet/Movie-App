@@ -50,6 +50,10 @@ const style = StyleSheet.create({
     margin: 5,
     backgroundColor: 'gray'
   },
+  favoriteImage: {
+    height: 20,
+    width: 20,
+  },  
 
 });
 

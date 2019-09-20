@@ -55,6 +55,15 @@ const style = StyleSheet.create({
   otherDetails: {
     fontWeight: 'bold',
     fontSize: 15,
+  },
+
+  favoriteButton: {
+    alignItems: "center",
+  },
+
+  favoriteImage: {
+    height: 40,
+    width: 40,
   }
 
 });

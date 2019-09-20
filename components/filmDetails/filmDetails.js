@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import numeral from 'numeral';
 import { connect } from 'react-redux';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { View, Text, Image, ActivityIndicator, Button } from 'react-native';
 import style from './style';
 import { getImageFromApi } from '../../API/TMDb';
@@ -52,6 +52,27 @@ class FilmDetails extends React.Component {
     return cieSting;
   };
 
+  _toggleFavorite() {
+    const action = {
+      type: "TOGGLE_FAVORITE",
+      value: this.state.film,
+    };
+    this.props.dispatch(action);
+  };
+
+  _displayFavoriteImage() {
+    var sourceImage = require('../../assets/fav_off.png');
+    if (this.props.favoritesFilms.findIndex(film => film.id === this.state.film.id) !== -1) {
+      sourceImage = require('../../assets/fav_on.png');
+    }
+    return (
+      <Image
+        style={style.favoriteImage}
+        source={sourceImage}
+      />
+    )
+  };
+
   _displayFilm() {
     const film = this.state.film;
     if (film) {
@@ -63,6 +84,12 @@ class FilmDetails extends React.Component {
           />
           <ScrollView style={style.middleView}>
             <Text style={style.title}>{film.title}</Text>
+            <TouchableOpacity
+              style={style.favoriteButton}
+              onPress={() => this._toggleFavorite()}
+            >
+              {this._displayFavoriteImage()}
+            </TouchableOpacity>
             <Text style={style.overview}>{film.overview}</Text>
             <Text style={style.otherDetails}>{'Sorti le: ' + moment(film.release_date).format('L')}</Text>
             <Text style={style.otherDetails}>{`Note: ${film.vote_average}`}</Text>
@@ -75,6 +102,11 @@ class FilmDetails extends React.Component {
       );
     };
   };
+
+  componentDidUpdate() {
+    // console.log('componentDidUpdate');
+    this.props.favoritesFilms.map((film) => console.log('->', film.id))
+  }
 
   async componentDidMount() {
     if (this.idFilm) {

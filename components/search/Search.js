@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { View, Button, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import style from './style';
 import FilmItem from '../filmItem/FilmItem';
@@ -56,7 +57,6 @@ class Search extends Component {
   };
 
   _displayDetailForFilm = (idFilm) => {
-    console.log('Film ID', idFilm);
     this.props.navigation.navigate("FilmDetails", { idFilm });
   };
 
@@ -85,6 +85,7 @@ class Search extends Component {
               this._loadFilms();
             };
           }}
+          extraData={this.props.favoritesFilms}
         >
         </FlatList>
         {this._displayLoading()}
@@ -93,4 +94,11 @@ class Search extends Component {
   };
 };
 
-export default Search;
+
+const mapStateToProps = (state) => {
+  return {
+    favoritesFilms: state.favoritesFilms,
+  };
+};
+
+export default connect(mapStateToProps)(Search);
