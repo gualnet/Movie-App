@@ -3,7 +3,7 @@ import moment from 'moment';
 import numeral from 'numeral';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Button } from 'react-native';
 import style from './style';
 import { getImageFromApi } from '../../API/TMDb';
 import { getFilmDetailFromApi } from '../../API/TMDb';
@@ -55,7 +55,6 @@ class FilmDetails extends React.Component {
   _displayFilm() {
     const film = this.state.film;
     if (film) {
-      console.log('001',film)
       return (
         <ScrollView style={style.scrollView}>
           <Image
@@ -73,8 +72,8 @@ class FilmDetails extends React.Component {
             <Text style={style.otherDetails}>{'Companie(s): ' + this._formatFilmCompanies(film.production_companies)}</Text>
           </ScrollView>
         </ScrollView>
-    )
-    }
+      );
+    };
   };
 
   async componentDidMount() {
