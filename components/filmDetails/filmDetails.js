@@ -1,6 +1,7 @@
 import React from 'react';
-import numeral from 'numeral';
 import moment from 'moment';
+import numeral from 'numeral';
+import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import style from './style';
@@ -71,12 +72,7 @@ class FilmDetails extends React.Component {
             <Text style={style.otherDetails}>{'Genre(s): ' + this._formatFilmGenres(film.genres)}</Text>
             <Text style={style.otherDetails}>{'Companie(s): ' + this._formatFilmCompanies(film.production_companies)}</Text>
           </ScrollView>
-          
         </ScrollView>
-        // <ScrollView style={style.scrollView}>
-        //   <Text>TITLE: {film.title}</Text>
-        //   <Text>OVERVIEW: {film.overview}</Text>
-        // </ScrollView>
     )
     }
   };
@@ -104,4 +100,10 @@ class FilmDetails extends React.Component {
   }
 };
 
-export default FilmDetails;
+const mapStateToProps = (state) => {
+  return {
+    favoritesFilms: state.favoritesFilms,
+  };
+};
+
+export default connect(mapStateToProps)(FilmDetails);
