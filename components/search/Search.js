@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Button, TextInput, FlatList, ActivityIndicator } from 'react-native';
+import { View, Button, TextInput, ActivityIndicator } from 'react-native';
 import style from './style';
 import FilmList from '../filmList/FilmList';
 

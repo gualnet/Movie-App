@@ -3,12 +3,34 @@ import moment from 'moment';
 import numeral from 'numeral';
 import { connect } from 'react-redux';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { View, Text, Image, ActivityIndicator, Button } from 'react-native';
+import { Platform, View, Text, Image, ActivityIndicator, Share, Button } from 'react-native';
 import style from './style';
 import { getImageFromApi } from '../../API/TMDb';
 import { getFilmDetailFromApi } from '../../API/TMDb';
 
 class FilmDetails extends React.Component {
+  // surcharge de la fonction react
+  static navigationOptions = ({ navigation }) => {
+    // ici la magie.. on recupere les data passé via le state de la navigation
+    const params = navigation.state.params;
+    // puis 
+    if (params.film && Platform.OS === 'ios') {
+      return {
+        headerRight: (
+          <TouchableOpacity
+            style={style.share_touchable_headerRightButton}
+            onPress={() => params.shareFilm()}>
+            <Image
+              style={style.share_image}
+              source={require('../../assets/ic_share.png')} />
+          </TouchableOpacity>
+        ),
+      };
+    }
+
+    
+  };
+
   constructor(props) {
     super(props);
     this.idFilm = undefined;
@@ -16,6 +38,13 @@ class FilmDetails extends React.Component {
       film: undefined,
       isLoading: true,
     };
+  };
+
+  _updateNavigationParams() {
+    this.props.navigation.setParams({
+      shareFilm: this._shareFilm,
+      film: this.state.film,
+    });
   };
 
   _displayLoading() {
@@ -103,18 +132,49 @@ class FilmDetails extends React.Component {
     };
   };
 
+  _displayFloatingActionButton() {
+    const film = this.state.film;
+    if (film && Platform.OS === 'android') {
+      return (
+        <TouchableOpacity
+          style={style.share_touchable_floatingactionbutton}
+          onPress={() => this._shareFilm()}>
+          <Image
+            style={style.share_image}
+            source={require('../../assets/ic_share.png')} />
+        </TouchableOpacity>
+      );
+    }
+  };
+
+  _shareFilm = () => {
+    const film = this.state.film;
+    Share.share({
+      title: film.title,
+      message: film.overview,
+    });
+  };
+
   componentDidUpdate() {
     // console.log('componentDidUpdate');
     this.props.favoritesFilms.map((film) => console.log('->', film.id))
   }
 
   async componentDidMount() {
+    /**
+     * on met a jour le state du component avec les données recuperees
+     * 
+     * puis on emet a jour le state de la navifation pour pouvoir acceder aux donnees
+     * de films depuis la navigation (cf navigationOptions)
+     */
     if (this.idFilm) {
       const data = await getFilmDetailFromApi(this.idFilm);
       this.setState({
         film: data,
         isLoading: false,
-      });
+      }, () => { this._updateNavigationParams() });
+      
+    
     }
   };
 
@@ -126,6 +186,7 @@ class FilmDetails extends React.Component {
       <View style={style.mainView}>
         {this._displayFilm()}
         {this._displayLoading()}
+        {this._displayFloatingActionButton()}
       </View>
     );
   }
