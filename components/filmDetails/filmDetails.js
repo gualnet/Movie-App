@@ -3,10 +3,11 @@ import moment from 'moment';
 import numeral from 'numeral';
 import { connect } from 'react-redux';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Platform, View, Text, Image, ActivityIndicator, Share, Button } from 'react-native';
+import { Platform, View, Text, Image, ActivityIndicator, Share } from 'react-native';
 import style from './style';
 import { getImageFromApi } from '../../API/TMDb';
 import { getFilmDetailFromApi } from '../../API/TMDb';
+import EnlargeShrink from '../../Animation/EnlargeShrink';
 
 class FilmDetails extends React.Component {
   // surcharge de la fonction react
@@ -91,15 +92,21 @@ class FilmDetails extends React.Component {
 
   _displayFavoriteImage() {
     var sourceImage = require('../../assets/fav_off.png');
+    let imageHeight = 40;
+    let imageWidth = 40;
     if (this.props.favoritesFilms.findIndex(film => film.id === this.state.film.id) !== -1) {
       sourceImage = require('../../assets/fav_on.png');
+      imageHeight = 80;
+      imageWidth = 80;
     }
+    // enlargeShrink provide animation for the fav icon
     return (
-      <Image
+      <EnlargeShrink
+        imageWidth={imageWidth}
+        imageHeight={imageHeight}
         style={style.favoriteImage}
-        source={sourceImage}
-      />
-    )
+        source={sourceImage} />
+    );
   };
 
   _displayFilm() {

@@ -62,8 +62,8 @@ const style = StyleSheet.create({
   },
 
   favoriteImage: {
-    height: 40,
-    width: 40,
+    height: null,
+    width: null,
   },
 
   share_touchable_floatingActionButton: {

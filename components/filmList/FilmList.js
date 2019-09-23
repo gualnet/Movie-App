@@ -17,7 +17,6 @@ class FilmList extends React.Component {
   };
 
   render() {
-    console.log('\nRENDER FilmList', this.props.films);
     return (
       <FlatList
           data={this.props.films}
